@@ -77,7 +77,7 @@ var log = require('oz-node-helpers').conf;
 conf.required(['STATSD_URL', 'REDISTOGO_URL', 'PORT']);
 
 // Fetches the value of some env variable.
-var port = conf.get('PORT'));
+var port = conf.get('PORT');
 ```
 
 ### Logger
