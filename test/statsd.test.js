@@ -27,12 +27,16 @@ describe('the statsd helper\'s', function () {
   })
   describe('#debugMode', function () {
     it('should only log to stdout', function () {
-      statsd.initialize({ debug: true });
-
-      sinon.stub(console, 'log');
+      var log = {
+        debug: sinon.stub()
+      };
+      statsd.initialize({ debug: true, logger: log });
       statsd.histogram('what', 1337);
-      console.log.calledOnce.should.be.ok;
-      console.log.restore();
+      log.debug.calledOnce.should.be.true
     });
+    it('should log to stdout when asked to', function () {
+      statsd.initialize({ debug: true });
+      statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
+    })
   })
 });

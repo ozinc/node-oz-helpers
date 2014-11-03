@@ -59,7 +59,22 @@ statsd.gauge('load_avg', 0.35);
 statsd.histogram('response_time', 235, ['route:/users/', 'method:GET']);
 ```
 
-Here are some docs on [DogStatsD](http://docs.datadoghq.com/guides/dogstatsd/).
+For those unfamiliar with DogStatsD, [here](http://docs.datadoghq.com/guides/dogstatsd/) are some docs.
+
+Another nice feature of this library is the "debug mode" which logs metrics to stdout instead of delivering them to a StatsD server:
+
+```javascript
+// Requires the helper.
+var statsd = require('oz-node-helpers').statsd;
+var log = require('oz-node-helpers').logger;
+
+// Initializes the lib from the STATSD_URL in debug mode with a Bunyan logger associated to it.
+statsd.initialize({ debug: true, logger: log });
+
+// Doing this will now log to stdout instead of delivering metrics to a StatsD server.
+statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
+// => statsd.histogram(what, 1337, 0.25, ['method:GET', 'route:/users/'])
+```
 
 #### TODO
 
