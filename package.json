@@ -9,6 +9,7 @@
   "author": "Hrafn Eiríksson <hranf@oz.com>",
   "license": "ISC",
   "dependencies": {
+    "bunyan": "^1.2.1",
     "node-statsd": "git://github.com/krummi/node-statsd"
   },
   "devDependencies": {
