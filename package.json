@@ -6,9 +6,13 @@
   "scripts": {
     "test": "npm test"
   },
-  "author": "Hrafn Eiríksson <hraf@oz.com>",
+  "author": "Hrafn Eiríksson <hranf@oz.com>",
   "license": "ISC",
   "dependencies": {
     "node-statsd": "git://github.com/krummi/node-statsd"
+  },
+  "devDependencies": {
+    "should": "^4.1.0",
+    "sinon": "^1.11.1"
   }
 }
