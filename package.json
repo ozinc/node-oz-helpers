@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "bunyan": "^1.2.1",
+    "lodash": "^2.4.1",
+    "nconf": "^0.6.9",
     "node-statsd": "git://github.com/krummi/node-statsd"
   },
   "devDependencies": {

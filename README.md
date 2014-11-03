@@ -42,7 +42,9 @@ Some examples of the StatsD helper in use:
 // Requires the helper.
 var statsd = require('oz-node-helpers').statsd;
 
-// Initalizes the lib from the STATSD_URL.
+// Helper initialization - required (or else an error will be thrown)!
+
+// Initializes the lib from the STATSD_URL.
 statsd.initialize({ url: conf.get('STATSD_URL'), prefix: 'awesome_module_z' });
 
 // Alternatively use the (host, port) tuple.
@@ -66,18 +68,48 @@ Here are some docs on [DogStatsD](http://docs.datadoghq.com/guides/dogstatsd/).
 
 ### Environment config helper
 
-The environment config helper is a thin wrapper around managing configuration via the environment — exactly what Heroku does! Its API is very simple:
+The environment config helper is a thin wrapper around the [flatiron/nconf](https://github.com/flatiron/nconf) configuration manager. First and foremost, it presents a simple API to access configuration described in the environment. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration **ALWAYS precedes** environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
+
+Some examples of the API:
 
 ```javascript
 // Requires the helper.
-var log = require('oz-node-helpers').conf;
+var conf = require('oz-node-helpers').conf;
 
-// Specifies that some environment variables are required, if any of them are
-// missing the process will exit immediately.
-conf.required(['STATSD_URL', 'REDISTOGO_URL', 'PORT']);
+// Helper initialization - optional but advised!
 
-// Fetches the value of some env variable.
+// Initializes the helper with name and version from package.json:
+var pkgInfo = require('./package');
+conf.initialize({
+  name: pkgInfo.name,
+  version: pkgInfo.version
+});
+
+// If no user-defined configuration is needed you can omit the call to .initialize()!
+
+// Fetch the value of 'name' which will in this case come from the user-defined configuration.
+var name = conf.get('name');
+
+// Fetch the value of 'PORT' which will in this case come from environment-defined configuration.
 var port = conf.get('PORT');
+
+// Fetch the value of 'PORT' and default to some value if the key does neither exist
+// in the user-defined nor the environment-defined configuration.
+var port = conf.get('PORT', 3000);
+```
+
+You can also tell the helper that some configuration keys need to be there as follows:
+
+```javascript
+// Requires the helper.
+var conf = require('oz-node-helpers').conf;
+
+// Omit the call to .initialize() as we don't want to specify any user-defined configuration.
+
+// Tell the helper to fail-hard if no configuration exists for 'PORT' and 'REDISTOGO_URL'.
+conf.required(['PORT', 'REDISTOGO_URL']);
+
+// The call to .required() will throw an error if any of the specified configuration keys do not exist.
 ```
 
 ### Logger
