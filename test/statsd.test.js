@@ -29,7 +29,7 @@ describe('the statsd helper\'s', function () {
     it('should only log to stdout', function () {
       statsd.initialize({ debug: true });
 
-      sinon.spy(console, 'log');
+      sinon.stub(console, 'log');
       statsd.histogram('what', 1337);
       console.log.calledOnce.should.be.ok;
       console.log.restore();

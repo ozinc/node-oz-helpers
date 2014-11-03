@@ -42,7 +42,7 @@ Some examples of the StatsD helper in use:
 // Requires the helper.
 var statsd = require('oz-node-helpers').statsd;
 
-// Helper initialization - required (or else an error will be thrown)!
+// Helper initialization - this is required (or else an error will be thrown)!
 
 // Initializes the lib from the STATSD_URL.
 statsd.initialize({ url: conf.get('STATSD_URL'), prefix: 'awesome_module_z' });
@@ -119,6 +119,11 @@ The logger is a really simple Bunyan logger that more and less only provides acc
 ```javascript
 // Requires the helper.
 var log = require('oz-node-helpers').logger;
+
+// Helper initialization - this is required (or else an error will be thrown)!
+var name = 'playlist_z'; // The name of your module.
+var version = '0.0.1'; // The version of your module.
+log.initialize(name, version);
 
 // Logs something to stdout!
 log.info({ n: 42 }, 'Love you guys!');

@@ -4,7 +4,7 @@
   "description": "A collection of NodeJS helpers built for use in OZ's products.",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "NODE_ENV=test mocha"
   },
   "author": "Hrafn Eiríksson <hranf@oz.com>",
   "license": "ISC",

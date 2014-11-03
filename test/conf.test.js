@@ -49,8 +49,7 @@ describe('the conf helper\'s', function () {
   describe('#set', function () {
     it('should properly set values to keys', function () {
       should.not.exist(conf.get('myKey'));
-      conf.set('myKey', 'hahahah');
-      console.log('config key: ', conf.get('myKey'))
+      conf.set('myKey', '<some value>');
       should.exist(conf.get('myKey'))
     })
   });
