@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=test mocha"
   },
-  "author": "Hrafn Eiríksson <hranf@oz.com>",
+  "author": "Hrafn Eiríksson <hrafn@oz.com>",
   "license": "ISC",
   "dependencies": {
     "bunyan": "^1.2.1",
