@@ -18,7 +18,7 @@ describe('logger', function () {
     log.info('never gonna run around and desert you.');
     log.warn({ no: 42 }, 'never gonna make you cry,');
     log.error({ err: new Error('err') }, 'never gonna say goodbye,');
-    log.fatal({ err: new Error('') }, 'never gonna tell a lie and hurt you.');
+    log.fatal({ err: new Error('err') }, 'never gonna tell a lie and hurt you.');
   });
   it('should not initialize without name/version', function () {
     (function () {
