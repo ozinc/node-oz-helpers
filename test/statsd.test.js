@@ -34,9 +34,11 @@ describe('the statsd helper\'s', function () {
       statsd.histogram('what', 1337);
       log.debug.calledOnce.should.be.true
     });
+    /*
     it('should log to stdout when asked to', function () {
       statsd.initialize({ debug: true });
       statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
-    })
+    });
+    */
   })
 });
