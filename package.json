@@ -1,6 +1,6 @@
 {
   "name": "oz-node-helpers",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A collection of NodeJS helpers built for use in OZ's products.",
   "main": "index.js",
   "scripts": {
