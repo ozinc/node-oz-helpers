@@ -1,4 +1,4 @@
-# OZ NodeJS Helpers
+# OZ's NodeJS Helpers
 > A collection of small helpers used across OZ's NodeJS modules.
 
 ## How To Use
@@ -6,13 +6,13 @@
 Install it and add it to `package.json`:
 
 ```bash
-npm install oz-node-helpers --save
+npm install node-oz-helpers --save
 ```
 
 Require it somewhere in your NodeJS module:
 
 ```javascript
-var helpers = require('oz-node-helpers');
+var helpers = require('node-oz-helpers');
 var conf = helpers.conf;
 var statsd = helpers.statsd;
 ```
@@ -20,7 +20,7 @@ var statsd = helpers.statsd;
 Or, if you only want to use one of the helpers:
 
 ```javascript
-var statsd = require('oz-node-helpers').statsd;
+var statsd = require('node-oz-helpers').statsd;
 ```
 
 ## The Helpers
@@ -41,7 +41,7 @@ Some examples of the StatsD helper in use:
 
 ```javascript
 // Requires the helper.
-var statsd = require('oz-node-helpers').statsd;
+var statsd = require('node-oz-helpers').statsd;
 
 // Helper initialization - this is required (or else an error will be thrown)!
 
@@ -66,8 +66,8 @@ Another nice feature of this library is the "debug mode" which logs metrics to s
 
 ```javascript
 // Requires the helper.
-var statsd = require('oz-node-helpers').statsd;
-var log = require('oz-node-helpers').logger;
+var statsd = require('node-oz-helpers').statsd;
+var log = require('node-oz-helpers').logger;
 
 // Initializes the lib from the STATSD_URL in debug mode with a Bunyan logger associated to it.
 statsd.initialize({ debug: true, logger: log });
@@ -81,7 +81,7 @@ The third nice feature of the library is the connect-based middleware it has bui
 
 ```javascript
 // Requires and initializes the helper.
-var statsd = require('oz-node-helpers').statsd;
+var statsd = require('node-oz-helpers').statsd;
 statsd.initialize({ prefix: 'user_z' });
 
 // Instruments a route with our middleware!
@@ -134,7 +134,7 @@ Some examples of the API:
 
 ```javascript
 // Requires the helper.
-var conf = require('oz-node-helpers').conf;
+var conf = require('node-oz-helpers').conf;
 
 // Helper initialization - optional but advised!
 
@@ -162,7 +162,7 @@ You can also tell the helper that some configuration keys need to be there as fo
 
 ```javascript
 // Requires the helper.
-var conf = require('oz-node-helpers').conf;
+var conf = require('node-oz-helpers').conf;
 
 // Omit the call to .initialize() as we don't want to specify any user-defined configuration.
 
@@ -178,7 +178,7 @@ The logger is a really simple Bunyan logger that more and less only provides acc
 
 ```javascript
 // Requires the helper.
-var log = require('oz-node-helpers').logger;
+var log = require('node-oz-helpers').logger;
 
 // Helper initialization - this is required (or else an error will be thrown)!
 var name = 'playlist_z'; // The name of your module.
