@@ -29,10 +29,11 @@ The helpers that this library defines are by-definiton small and well-defined.
 
 ### StatsD helper
 
-The StatsD helper is based on [our fork](https://github.com/krummi/node-statsd/commits/master) of the `sivy/node-statsd` statsd client for NodeJS which — obviously — allows developers to send metrics to a StatsD server. Additionally, the helper adds support for some nice, more OZ-specific features:
+The StatsD helper is based on [our fork](https://github.com/krummi/node-statsd/commits/master) of the `sivy/node-statsd` statsd client for NodeJS which — obviously — allows developers to send metrics to a StatsD server. Additionally, the helper adds support for some very-nice-to-have extra features:
 
   * It logs the metrics being sent to stdout when `NODE_ENV=development`.
   * It allows you to initialize it with a URL instead of a `host`/`port` combo.
+  * It adds a connect-based middleware that can be added to routes to automagically provide response-time metrics on that specific route. 
 
 #### API
 
@@ -76,12 +77,54 @@ statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
 // => statsd.histogram(what, 1337, 0.25, ['method:GET', 'route:/users/'])
 ```
 
+The third nice feature of the library is the connect-based middleware it has built in. This feature allows anyone to instrument their Express/Restify-based routes with response-time metrics in a super simple manner. The library will not only record the total time it takes to serve requests, it also offers so called `checkpoints`. This feature is probably best explained by an example:
+
+```javascript
+// Requires and initializes the helper.
+var statsd = require('oz-node-helpers').statsd;
+statsd.initialize({ prefix: 'user_z' });
+
+// Instruments a route with our middleware!
+app.get('/users/:id/channels', statsd.middleware('requests'), function (req, res) {
+  var userId = req.params.id;
+
+  User.getUserById(userId)
+  .then(function (user) {
+
+    // The middleware adds a function to the request object that allows us to create new
+    // "checkpoints". Here we create one indicating that the database call is finished.
+    req.checkpoint('getUser');
+
+    return Channels.getChannelsForUser(userId);
+  })
+  .then(function (channels) {
+
+    // Here we create another checkpoint.
+    req.checkpoint('getChannels');
+
+    res.status(200).json(channels));
+  });
+});
+```
+
+If you initialize the StatsD helper to be in "debug mode" you will see something like this in the console:
+
+```
+statsd.histogram('user_z.requests', 736, ['method:GET', 'route:/users/$id/chanenls', 'part:getUser'])
+statsd.histogram('user_z.requests', 129, ['method:GET', 'route:/users/$id/channels', 'part:getChannels'])
+statsd.histogram('user_z.requests.total', 867, ['method:GET', 'route:/users/$id/channels'])
+```
+
+And obviously if you are not in debug mode you can see pretty graphs in DataDog that are created from this!
+
+**Note** that presently you need to manually instrument each and every route that you want to get metrics for with `statsd.middleware(key)`. There are good reasons for this and we are looking for ways to make it such that you can just type `app.use(statsd.middleware)` once and it will then use it for all of the routes.
+
 #### TODO
 
 * Add default tags to the mix.
-* Add DataDog/Heroku connect-based middleware to the mix.
+* Find a way to just add the StatsD middleware once and not for every route.
 
-### Environment config helper
+### Configuration Helper
 
 The environment config helper is a thin wrapper around the [flatiron/nconf](https://github.com/flatiron/nconf) configuration manager. First and foremost, it presents a simple API to access configuration described in the environment. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration **ALWAYS precedes** environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
 
@@ -127,7 +170,7 @@ conf.required(['PORT', 'REDISTOGO_URL']);
 // The call to .required() will throw an error if any of the specified configuration keys do not exist.
 ```
 
-### Logger
+### Logger Helper
 
 The logger is a really simple Bunyan logger that more and less only provides access to a Bunyan logging instance which prints to stdout.
 
