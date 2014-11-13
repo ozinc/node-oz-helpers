@@ -33,7 +33,7 @@ The StatsD helper is based on [our fork](https://github.com/krummi/node-statsd/c
 
   * It logs the metrics being sent to stdout when `NODE_ENV=development`.
   * It allows you to initialize it with a URL instead of a `host`/`port` combo.
-  * It adds a connect-based middleware that can be added to routes to automagically provide response-time metrics on that specific route. 
+  * It adds a connect-based middleware that can be added to routes to automagically provide response-time metrics on that specific route.
 
 #### API
 
@@ -110,9 +110,9 @@ app.get('/users/:id/channels', statsd.middleware('requests'), function (req, res
 If you initialize the StatsD helper to be in "debug mode" you will see something like this in the console:
 
 ```
-statsd.histogram('user_z.requests', 736, ['method:GET', 'route:/users/$id/chanenls', 'part:getUser'])
-statsd.histogram('user_z.requests', 129, ['method:GET', 'route:/users/$id/channels', 'part:getChannels'])
-statsd.histogram('user_z.requests.total', 867, ['method:GET', 'route:/users/$id/channels'])
+statsd.histogram('user_z.requests', 736, ['method:get', 'route:/users/$id/chanenls', 'part:getUser'])
+statsd.histogram('user_z.requests', 129, ['method:get', 'route:/users/$id/channels', 'part:getChannels'])
+statsd.histogram('user_z.requests.total', 867, ['method:get', 'route:/users/$id/channels', 'status:200'])
 ```
 
 And obviously if you are not in debug mode you can see pretty graphs in DataDog that are created from this:
