@@ -115,7 +115,9 @@ statsd.histogram('user_z.requests', 129, ['method:GET', 'route:/users/$id/channe
 statsd.histogram('user_z.requests.total', 867, ['method:GET', 'route:/users/$id/channels'])
 ```
 
-And obviously if you are not in debug mode you can see pretty graphs in DataDog that are created from this!
+And obviously if you are not in debug mode you can see pretty graphs in DataDog that are created from this:
+
+![DataDog](https://cloud.githubusercontent.com/assets/331083/5029925/5539dc3c-6b43-11e4-9ab3-6ca6a6064a80.png)
 
 **Note** that presently you need to manually instrument each and every route that you want to get metrics for with `statsd.middleware(key)`. There are good reasons for this and we are looking for ways to make it such that you can just type `app.use(statsd.middleware)` once and it will then use it for all of the routes.
 
