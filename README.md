@@ -130,8 +130,6 @@ And obviously if you are not in debug mode you can see pretty graphs in DataDog 
 
 The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to access configuration described in the environment. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precendence over environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
 
-The configuration helper also looks for a `.env` file in the root of your project and automatically imports all of the `KEY=VALUE` pairs from there and makes them available via the `.get()` function.
-
 Some examples of the API:
 
 ```javascript
