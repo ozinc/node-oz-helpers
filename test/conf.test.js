@@ -11,15 +11,18 @@ describe('the conf helper\'s', function () {
     process.env['MY_CONFIG_KEY'] = 'true';
     conf.reset();
   })
-  describe('#initialize', function () {
-    it('should correctly parse the package info', function () {
-      conf.initialize({
-        name: 'test_z',
-        version: '0.1.2'
-      });
-      conf.get('name').should.equal('test_z');
-      conf.get('version').should.equal('0.1.2');
+  describe('#getInstance', function () {
+    it('should correctly parse the package.json from the root app', function () {
+      conf.getInstance();
+      conf.get('name').should.equal('node-oz-helpers');
+      conf.get('version').should.exist;
     });
+    it('should correctly parse user-defined options that are sent to it', function () {
+      conf.getInstance({ dog: 'cool' });
+      conf.get('dog').should.equal('cool');
+    });
+  });
+  describe('#required', function () {
     it('should throw an exception if some required key is missing', function () {
       (function () {
         conf.required(['STATSD_URL']);
@@ -28,10 +31,7 @@ describe('the conf helper\'s', function () {
   });
   describe('#get', function () {
     it('should provide a default value when asked to', function () {
-      conf.initialize({
-        name: 'test_z',
-        version: '0.1.2'
-      });
+      conf.getInstance();
       var url = conf.get('REDISTOGO_URL', 'redis://localhost:9999/');
       url.should.equal('redis://localhost:9999/');
     });

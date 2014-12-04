@@ -8,15 +8,15 @@ describe('the statsd helper\'s', function () {
   afterEach(function () {
     statsd.reset();
   })
-  describe('#initialize', function () {
+  describe('#getInstance', function () {
     it('should correctly parse an url if provided with one', function () {
-      statsd.initialize({ url: 'statsd://localhost:1337/' })
+      statsd.getInstance({ url: 'statsd://localhost:1337/' })
       statsd.getInstanceInfo().host.should.equal('localhost');
       statsd.getInstanceInfo().port.should.equal(1337);
     });
     it('should throw an error if provided with both url and host/port', function () {
       (function () {
-        statsd.initialize({ url: 'statsd://localhost:1337/', host: 'mbl.is', port: 80 });
+        statsd.getInstance({ url: 'statsd://localhost:1337/', host: 'mbl.is', port: 80 });
       }).should.throw();
     });
     it('should not send metrics without initialization', function () {
@@ -30,13 +30,13 @@ describe('the statsd helper\'s', function () {
       var log = {
         debug: sinon.stub()
       };
-      statsd.initialize({ debug: true, logger: log });
+      statsd.getInstance({ debug: true, logger: log });
       statsd.histogram('what', 1337);
       log.debug.calledOnce.should.be.true
     });
 
     it('should log to stdout when asked to', function () {
-      statsd.initialize({ debug: true, prefix: 'awesome_z' });
+      statsd.getInstance({ debug: true, prefix: 'awesome_z' });
       statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
     });
 

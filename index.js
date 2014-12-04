@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  statsd: require('./lib/statsd'),
-  logger: require('./lib/logger'),
-  conf: require('./lib/conf')
+  getLogger: require('./lib/statsd').getStatsD,
+  logger: require('./lib/logger').getLogger,
+  conf: require('./lib/conf').getConf
 };
