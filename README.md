@@ -32,9 +32,7 @@ This small library currently implements three very-well defined and isolated hel
 * **Logger** - a thin wrapper around bunyan.
 * **Conf** - a lightweight abstraction of environment variables, with some sugar.
 
-## The Helpers
-
-### StatsD helper
+## StatsD helper
 
 The StatsD helper is based on [our fork](https://github.com/krummi/node-statsd/commits/master) of the `sivy/node-statsd` statsd client for NodeJS which — obviously — allows developers to send metrics to a StatsD server. Additionally, the helper adds support for some very-nice-to-have extra features:
 
@@ -138,40 +136,41 @@ And obviously if you are not in debug mode you can see pretty graphs in DataDog 
 
 **Note** that presently you need to manually instrument each and every route that you want to get metrics for with `statsd.middleware(key)`. There are valid reasons for this and we are looking for ways to make it such that you can just type `app.use(statsd.middleware)` once and it will then use it for all of the routes.
 
-#### TODO
+### TODO
 
 * Add default tags to the mix.
 * Find a way to just add the StatsD middleware once and not for every route.
 
-### Configuration Helper
+## Configuration Helper
 
-The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to access configuration described in the environment. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precendence over environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
+The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precendence over environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
 
 Some examples of the API:
 
 ```javascript
-// Requires the helper.
+// Requires the helper with one user-defined option.
 var conf = require('node-oz-helpers').getConf({
   delay: 9000
 });
 
-// Fetch the value delay value which defined in the configuration.
-conf.get('delay');
-// => 9000
+// Fetch the value of 'PORT' which should come from the environment.
+var port = conf.get('PORT');
+// => Basically just fetches process.env.PORT
 
 // Fetch the value of 'name' which is the name of your application and is automagically
 // read from your app's package.json file.
 var name = conf.get('name');
 
-// Fetch the value of 'PORT' which will probably come from environment-defined configuration.
-var port = conf.get('PORT');
+// Fetch the value of the delay key that you provided the config helper with.
+conf.get('delay');
+// => 9000
 
 // Fetch the value of 'PORT' and default to some value if the key does neither exist
 // in the user-defined nor the environment-defined configuration.
 var port = conf.get('PORT', 3000);
 ```
 
-You can also tell the helper that some configuration keys need to be there as follows:
+You can also tell the helper that some configuration keys are required, as follows:
 
 ```javascript
 // Requires the helper.
@@ -184,7 +183,7 @@ conf.required(['PORT', 'REDISTOGO_URL']);
 // exist. I'm not sure if this is the best way around it, but it is a way.
 ```
 
-### Logger Helper
+## Logger Helper
 
 The logger is a really simple Bunyan logger that more and less only provides access to a Bunyan logging instance which prints to stdout. Behind the scenes it will automagically read the name and version of your application from your package.json and pass that along with all log lines.
 
