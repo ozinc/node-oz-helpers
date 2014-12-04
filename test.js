@@ -1,8 +1,7 @@
-var statsd = require('./lib/statsd');
+var statsd = require('./lib/statsd').getInstance();
 var express = require('express');
 var RNG = require('rng');
 
-statsd.initialize({ debug: true });
 var app = express();
 var rng = new RNG('WhatAWhat');
 

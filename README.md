@@ -58,6 +58,11 @@ var statsd = require('node-oz-helpers').getStatsD({
   prefix: 'awesome_module_z'
 });
 
+// If you provide no options, the helper will do one of two things depending on the state:
+// (1) If you have already initialized the helper it will use that configuration.
+// (2) If you have not initialized the helper, it default to debug mode and thus NOT send metrics.
+var statsd = require('node-oz-helpers').getStatsD();
+
 // Then you can just use the sivy/node-statsd API to send some metrics!
 statsd.timing('response_time', 125);
 statsd.increment('no_of_visits');
@@ -136,6 +141,46 @@ And obviously if you are not in debug mode you can see pretty graphs in DataDog 
 
 **Note** that presently you need to manually instrument each and every route that you want to get metrics for with `statsd.middleware(key)`. There are valid reasons for this and we are looking for ways to make it such that you can just type `app.use(statsd.middleware)` once and it will then use it for all of the routes.
 
+### Gotchas
+
+There are some gotchas regarding the statsd helper that all stem from the fact that we want to keep it in such a way that _when you have initialized the options of it once, you probably do not want to initialize them again but rather just always use the same configuration_. One of the main gotchas is that the order in which you require stuff that uses the statsd helper matters. This means that if you have the following two files:
+
+```javascript
+// server.js (the application's entrypoint)
+
+if (conf.get('NODE_ENV') === 'production') {
+  statsd = helpers.getStatsD({ url: conf.get('STATSD_URL'), prefix: conf.get('name') });
+} else {
+  statsd = helpers.getStatsD({ debug: true, logger: log, prefix: conf.get('name') });
+}
+
+var db = require('./repositories/db.js');
+```
+```javascript
+// db.js (the application's entrypoint)
+
+statsd = require('node-oz-helpers').getStatsD();
+```
+
+The `statsd` variable in `db.js` would use the same configuration as the one in `server.js`. **Now if you would change `server.js` as follows:**
+
+
+```javascript
+// server.js (the application's entrypoint)
+
+var db = require('./repositories/db.js');
+
+if (conf.get('NODE_ENV') === 'production') {
+  statsd = helpers.getStatsD({ url: conf.get('STATSD_URL'), prefix: conf.get('name') });
+} else {
+  statsd = helpers.getStatsD({ debug: true, logger: log, prefix: conf.get('name') });
+}
+```
+
+You would use the default configuration from `db.js` in `server.js` which means that nothing would work!
+
+Due to this reason we throw an exception letting you know when you do this. Sawry.
+
 ### TODO
 
 * Add default tags to the mix.
@@ -143,15 +188,13 @@ And obviously if you are not in debug mode you can see pretty graphs in DataDog 
 
 ## Configuration Helper
 
-The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precendence over environment-based configuration. This means that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
+The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precedence over environment-based configuration, meaning that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
 
 Some examples of the API:
 
 ```javascript
-// Requires the helper with one user-defined option.
-var conf = require('node-oz-helpers').getConf({
-  delay: 9000
-});
+// Requires the helper.
+var conf = require('node-oz-helpers').getConf();
 
 // Fetch the value of 'PORT' which should come from the environment.
 var port = conf.get('PORT');
@@ -161,7 +204,10 @@ var port = conf.get('PORT');
 // read from your app's package.json file.
 var name = conf.get('name');
 
-// Fetch the value of the delay key that you provided the config helper with.
+// If you want you can set your own user-defined configuration. The conf helper will first look
+// in the user-defined configuration BEFORE the environment configuration.
+conf.set('delay', 9000);
+// ... some code here ...
 conf.get('delay');
 // => 9000
 
