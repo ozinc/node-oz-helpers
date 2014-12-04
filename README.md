@@ -77,14 +77,11 @@ For those unfamiliar with DogStatsD, [here](http://docs.datadoghq.com/guides/dog
 Another nice feature of this library is the "debug mode" which logs metrics to stdout instead of delivering them to a StatsD server:
 
 ```javascript
-// Initializes the lib from the STATSD_URL in debug mode with a Bunyan logger associated to it.
+// Initializes the lib from the STATSD_URL in debug mode.
 var log = require('node-oz-helpers').getLogger();
 var statsd = require('node-oz-helpers').getStatsD({
-  debug: true,
-  logger: log
+  debug: true
 });
-
-// If you don't provide a logger instance it will just default to console.log.
 
 // Doing this will now log to stdout instead of delivering the metrics to a StatsD server.
 statsd.histogram('what', 1337, 0.25, ['method:GET', 'route:/users/']);
