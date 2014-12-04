@@ -32,6 +32,61 @@ This small library currently implements three very-well defined and isolated hel
 * **Logger** - a thin wrapper around bunyan.
 * **Conf** - a lightweight abstraction of environment variables, with some sugar.
 
+## Logger Helper
+
+The logger is a really simple Bunyan logger that more and less only provides access to a Bunyan logging instance which prints to stdout. Behind the scenes it automagically reads the name and version of your application from your `package.json` and passes that along with all log lines.
+
+```javascript
+// Requires the helper.
+var log = require('node-oz-helpers').getLogger();
+
+// Logs something to stdout!
+log.info({ n: 42 }, 'Love you guys!');
+```
+
+## Configuration Helper
+
+The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precedence over environment-based configuration, meaning that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
+
+Some examples of the API:
+
+```javascript
+// Requires the helper.
+var conf = require('node-oz-helpers').getConf();
+
+// Fetch the value of 'PORT' which should come from the environment.
+var port = conf.get('PORT');
+// => Basically just fetches process.env.PORT
+
+// Fetch the value of 'name' which is the name of your application and is automagically
+// read from your app's package.json file.
+var name = conf.get('name');
+
+// If you want you can set your own user-defined configuration. The conf helper will first look
+// in the user-defined configuration BEFORE the environment configuration.
+conf.set('delay', 9000);
+// ... some code here ...
+conf.get('delay');
+// => 9000
+
+// Fetch the value of 'PORT' and default to some value if the key does neither exist
+// in the user-defined nor the environment-defined configuration.
+var port = conf.get('PORT', 3000);
+```
+
+You can also tell the helper that some configuration keys are required, as follows:
+
+```javascript
+// Requires the helper.
+var conf = require('node-oz-helpers').getConf();
+
+// Tell the helper to fail-hard if no configuration exists for 'PORT' and 'REDISTOGO_URL'.
+conf.required(['PORT', 'REDISTOGO_URL']);
+
+// The call to .required() will throw an error if any of the specified configuration keys do not
+// exist. I'm not sure if this is the best way around it, but it is a way.
+```
+
 ## StatsD helper
 
 The StatsD helper is based on [our fork](https://github.com/krummi/node-statsd/commits/master) of the `sivy/node-statsd` statsd client for NodeJS which — obviously — allows developers to send metrics to a StatsD server. Additionally, the helper adds support for some very-nice-to-have extra features:
@@ -182,58 +237,3 @@ Due to this reason we throw an exception letting you know when you do this. Sawr
 
 * Add default tags to the mix.
 * Find a way to just add the StatsD middleware once and not for every route.
-
-## Configuration Helper
-
-The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precedence over environment-based configuration, meaning that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
-
-Some examples of the API:
-
-```javascript
-// Requires the helper.
-var conf = require('node-oz-helpers').getConf();
-
-// Fetch the value of 'PORT' which should come from the environment.
-var port = conf.get('PORT');
-// => Basically just fetches process.env.PORT
-
-// Fetch the value of 'name' which is the name of your application and is automagically
-// read from your app's package.json file.
-var name = conf.get('name');
-
-// If you want you can set your own user-defined configuration. The conf helper will first look
-// in the user-defined configuration BEFORE the environment configuration.
-conf.set('delay', 9000);
-// ... some code here ...
-conf.get('delay');
-// => 9000
-
-// Fetch the value of 'PORT' and default to some value if the key does neither exist
-// in the user-defined nor the environment-defined configuration.
-var port = conf.get('PORT', 3000);
-```
-
-You can also tell the helper that some configuration keys are required, as follows:
-
-```javascript
-// Requires the helper.
-var conf = require('node-oz-helpers').getConf();
-
-// Tell the helper to fail-hard if no configuration exists for 'PORT' and 'REDISTOGO_URL'.
-conf.required(['PORT', 'REDISTOGO_URL']);
-
-// The call to .required() will throw an error if any of the specified configuration keys do not
-// exist. I'm not sure if this is the best way around it, but it is a way.
-```
-
-## Logger Helper
-
-The logger is a really simple Bunyan logger that more and less only provides access to a Bunyan logging instance which prints to stdout. Behind the scenes it will automagically read the name and version of your application from your package.json and pass that along with all log lines.
-
-```javascript
-// Requires the helper.
-var log = require('node-oz-helpers').getLogger();
-
-// Logs something to stdout!
-log.info({ n: 42 }, 'Love you guys!');
-```
