@@ -44,6 +44,13 @@ var log = require('node-oz-helpers').getLogger();
 log.info({ n: 42 }, 'Love you guys!');
 ```
 
+The logger can be supplied with two environment variables to decrease/increase the verbosity of logging:
+
+* `LOG=false` will turn off logging altogether.
+* `LOGLEVEL` can be set to one of the usual `{trace,debug,info,warn,error,fatal}`.
+
+If neither is supplied the log-level will default to `debug`.
+
 ## Configuration Helper
 
 The environment config helper is a thin wrapper wrapping the environment configuration. First and foremost, it presents a simple API to _access configuration described in the environment_. It also allows the user to manually define user-defined configuration values. Note that user-defined configuration takes precedence over environment-based configuration, meaning that if both the user and the environment defines the same configuration key, the helper will return the user-defined one.
