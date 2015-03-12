@@ -239,8 +239,3 @@ if (conf.get('NODE_ENV') === 'production') {
 You would use the default configuration from `db.js` in `server.js` which means that nothing would work!
 
 Due to this reason we throw an exception letting you know when you do this. Sawry.
-
-### TODO
-
-* Add default tags to the mix.
-* Find a way to just add the StatsD middleware once and not for every route.
