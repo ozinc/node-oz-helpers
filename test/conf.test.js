@@ -17,10 +17,6 @@ describe('the conf helper\'s', function () {
       conf.get('name').should.equal('node-oz-helpers');
       conf.get('version').should.exist;
     });
-    it('should correctly parse user-defined options that are sent to it', function () {
-      conf.getInstance({ dog: 'cool' });
-      conf.get('dog').should.equal('cool');
-    });
   });
   describe('#required', function () {
     it('should throw an exception if some required key is missing', function () {
