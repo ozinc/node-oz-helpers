@@ -1,6 +1,6 @@
 {
   "name": "node-oz-helpers",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A collection of NodeJS helpers built for use in OZ's products.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "on-headers": "^1.0.0"
   },
   "devDependencies": {
+    "mocha": "^2.2.1",
     "should": "^4.1.0",
     "sinon": "^1.11.1"
   }
