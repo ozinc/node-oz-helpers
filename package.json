@@ -18,6 +18,7 @@
     "lodash": "^2.4.1",
     "nconf": "^0.6.9",
     "node-statsd": "git://github.com/ozinc/node-statsd",
+    "on-finished": "^2.2.0",
     "on-headers": "^1.0.0"
   },
   "devDependencies": {
