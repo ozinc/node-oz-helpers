@@ -15,7 +15,7 @@ describe('the conf helper\'s', function () {
     it('should correctly parse the package.json from the root app', function () {
       conf.getInstance();
       conf.get('name').should.equal('node-oz-helpers');
-      conf.get('version').should.exist;
+      should.exist(conf.get('version'));
     });
   });
   describe('#required', function () {

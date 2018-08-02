@@ -13,17 +13,17 @@
     "url": "http://www.github.com/ozinc/node-oz-helpers"
   },
   "dependencies": {
-    "app-root-path": "^1.0.0",
-    "bunyan": "^1.8.1",
-    "lodash": "^2.4.1",
-    "nconf": "^0.6.9",
-    "node-statsd": "git://github.com/ozinc/node-statsd",
-    "on-finished": "^2.2.0",
-    "on-headers": "^1.0.0"
+    "app-root-path": "^2.1.0",
+    "bunyan": "^1.8.12",
+    "lodash": "^4.17.10",
+    "nconf": "^0.10.0",
+    "node-statsd": "^0.1.1",
+    "on-finished": "^2.3.0",
+    "on-headers": "^1.0.1"
   },
   "devDependencies": {
-    "mocha": "^2.2.1",
-    "should": "^4.1.0",
-    "sinon": "^1.11.1"
+    "mocha": "^5.2.0",
+    "should": "^13.2.3",
+    "sinon": "^6.1.4"
   }
 }
