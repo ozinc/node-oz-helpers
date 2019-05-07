@@ -4,6 +4,7 @@
   "description": "A collection of NodeJS helpers built for use in OZ's products.",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "NODE_ENV=test mocha"
   },
   "author": "Hrafn Eiríksson <hrafn@oz.com>",
@@ -22,8 +23,17 @@
     "on-headers": "^1.0.1"
   },
   "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
+    "@types/bunyan": "^1.8.6",
+    "@types/express": "^4.16.1",
+    "@types/lodash": "^4.14.123",
+    "@types/nconf": "^0.10.0",
+    "@types/node-statsd": "^0.1.2",
+    "@types/on-finished": "^2.3.1",
+    "@types/on-headers": "^1.0.0",
     "mocha": "^5.2.0",
     "should": "^13.2.3",
-    "sinon": "^6.1.4"
+    "sinon": "^6.1.4",
+    "typescript": "^3.4.5"
   }
 }

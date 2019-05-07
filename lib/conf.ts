@@ -1,21 +1,19 @@
-'use strict';
-
-var nconf = require('nconf');
-var _ = require('lodash');
-var appRoot = require('app-root-path');
+import appRoot from 'app-root-path';
+import lodash from 'lodash';
+import nconf from 'nconf';
 
 // Reads in the environment-defined configuration.
 nconf.env();
 
-var userDefinedOptions = {};
-var that = this;
-var initialized = false;
+let userDefinedOptions : { [key: string]: string } = {};
+const that = this;
+let initialized = false;
 
 function getInstance() {
   if (!initialized) {
     // Automatically read in the name/version from the package.json OF THE ROOT app and put it into
     // the user defined options.
-    var pkgInfo = require(appRoot + '/package.json');
+    const pkgInfo = require(appRoot + '/package.json');
     userDefinedOptions.name = pkgInfo.name;
     userDefinedOptions.version = pkgInfo.version;
     initialized = true;
@@ -23,32 +21,34 @@ function getInstance() {
   return that;
 }
 
-function required(args) {
-  if (!_.isArray(args) && !_.isString(args)) {
+function required(args : string[] | string) {
+  if (!lodash.isArray(args) && !lodash.isString(args)) {
     throw new Error('The required field should contain an array or a string.');
   }
-  if (_.isString(args)) {
+  if (typeof args === "string" && lodash.isString(args)) {
     if (!has(args)) {
       throw new Error('Missing configuration key: ' + args);
     }
   }
 
   // args must be an array.
-  args.forEach(function (key) {
-    if (!has(key)) {
-      throw new Error('Missing configuration key: ' + key);
-    }
-  });
+  if (args instanceof Array && lodash.isArray(args)) {
+    args.forEach(function (key : string) {
+      if (!has(key)) {
+        throw new Error('Missing configuration key: ' + key);
+      }
+    });
+  }
 }
 
-function get(key, defaultValue) {
+function get(key : string, defaultValue? : string) {
   // (1) Check the user-defined options.
-  if (_.has(userDefinedOptions, key)) {
+  if (lodash.has(userDefinedOptions, key)) {
     return userDefinedOptions[key];
   }
 
   // (2) Check the environment-defined options.
-  var val = nconf.get(key);
+  let val = nconf.get(key);
 
   if (val === undefined && defaultValue !== undefined) {
     return defaultValue;
@@ -56,12 +56,12 @@ function get(key, defaultValue) {
   return val;
 }
 
-function set(key, value) {
+function set(key : string, value : string) {
   userDefinedOptions[key] = value;
 }
 
-function has(key) {
-  var value = get(key);
+function has(key : string) {
+  const value = get(key);
   return value !== undefined;
 }
 
@@ -79,5 +79,13 @@ module.exports.required = required;
 module.exports.get = get;
 module.exports.set = set;
 module.exports.has = has;
+
+export default {
+  getInstance: getInstance,
+  required: required,
+  get: get,
+  set: set,
+  has: has
+};
 
 module.exports.reset = reset;

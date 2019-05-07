@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  getStatsD: require('./lib/statsd').getInstance,
-  getLogger: require('./lib/logger').getInstance,
-  getConf: require('./lib/conf').getInstance
+  getStatsD: require('./build/statsd').getInstance,
+  getLogger: require('./build/logger').getInstance,
+  getConf: require('./build/conf').getInstance
 };
