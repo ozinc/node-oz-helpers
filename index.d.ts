@@ -3,7 +3,7 @@ import logger from './lib/logger';
 import statsd from './lib/statsd';
 
 declare module 'node-oz-helpers' {
-  export const getConf: typeof conf;
-  export const getLogger: typeof logger;
-  export const getStatsD: typeof statsd;
+  export function getConf(): typeof conf;
+  export function getLogger(): typeof logger;
+  export function getStatsD(): typeof statsd;
 }
