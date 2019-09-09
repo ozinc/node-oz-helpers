@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 interface Config {
     port: any;
     host: any;
@@ -14,7 +15,7 @@ declare function getInstance(obj: Config): typeof globalThis;
  * @param key the statsd key to use.
  * @returns {measure} the middleware.
  */
-declare function middleware(key: string | undefined): (req: Request, res: Response, next: NextFunction) => void;
+declare function middleware(key?: string): (req: Request, res: Response, next: NextFunction) => void;
 declare function getInstanceInfo(): {
     host: string | undefined;
     port: number | undefined;
