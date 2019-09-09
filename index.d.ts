@@ -16,5 +16,5 @@ export interface StatsdConfig {
 declare module 'node-oz-helpers' {
   export function getConf(): typeof conf;
   export function getLogger(): typeof logger;
-  export function getStatsD(config: StatsdConfig): typeof statsd;
+  export function getStatsD(config?: StatsdConfig): typeof statsd;
 }
