@@ -14,7 +14,7 @@ export interface StatsdConfig {
 }
 
 export interface LoggerConfig {
-  disabled?: booplean;
+  disabled?: boolean;
 }
 
 declare module 'node-oz-helpers' {
