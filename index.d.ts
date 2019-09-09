@@ -13,8 +13,12 @@ export interface StatsdConfig {
   global_tags?: string[];
 }
 
+export interface LoggerConfig {
+  disabled?: booplean;
+}
+
 declare module 'node-oz-helpers' {
   export function getConf(): typeof conf;
-  export function getLogger(): typeof logger;
+  export function getLogger(config?: LoggerConfig): typeof logger;
   export function getStatsD(config?: StatsdConfig): typeof statsd;
 }
