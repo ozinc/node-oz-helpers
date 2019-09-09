@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 declare function getInstance(options: any): typeof globalThis;
 interface RequestTimed extends Request {
     _startAt: [number, number];
@@ -7,11 +8,11 @@ declare function requestLogger(options: any): (req: RequestTimed, res: Response,
 declare const _default: {
     getInstance: typeof getInstance;
     requestLogger: typeof requestLogger;
-    trace: () => void;
-    debug: () => void;
-    info: () => void;
-    warn: () => void;
-    error: () => void;
-    fatal: () => void;
+    trace: (...args: any[]) => void;
+    debug: (...args: any[]) => void;
+    info: (...args: any[]) => void;
+    warn: (...args: any[]) => void;
+    error: (...args: any[]) => void;
+    fatal: (...args: any[]) => void;
 };
 export default _default;
