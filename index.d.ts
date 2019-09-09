@@ -1,17 +1,6 @@
 import conf from './lib/conf';
 import logger from './lib/logger';
-import statsd from './lib/statsd';
-
-export interface StatsdConfig {
-  debug?: boolean | any;
-  cacheDns?: boolean;
-  logger?: { debug: any };
-  prefix?: string;
-  url?: string;
-  host?: string;
-  port?: number;
-  global_tags?: string[];
-}
+import statsd, { Config as StatsdConfig } from './lib/statsd';
 
 export interface LoggerConfig {
   disabled?: boolean;
