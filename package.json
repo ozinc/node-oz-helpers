@@ -16,7 +16,7 @@
   "dependencies": {
     "app-root-path": "^2.1.0",
     "bunyan": "^1.8.12",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.15",
     "nconf": "^0.10.0",
     "node-statsd": "^0.1.1",
     "on-finished": "^2.3.0",
